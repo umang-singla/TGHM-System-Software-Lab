@@ -12,4 +12,5 @@ urlpatterns = [
     path('add_station/', views.add_station, name='add_station'),
     path('add_train/', views.add_train, name='add_train'),
     path('change_station_status/', views.change_station_status, name='change_station_status'),
+    path('edit_train/<int:train_id>', views.edit_train, name='edit_train'),
 ]

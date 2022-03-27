@@ -16,6 +16,6 @@ class Station(models.Model):
 
 class Train(models.Model):
     name = models.CharField(max_length=50)
-    stations = models.CharField(max_length=200)
+    stations = models.CharField(max_length=200, default='')
     def __str__(self):
         return self.name
