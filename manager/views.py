@@ -18,7 +18,7 @@ def login_admin(request):
     if obj is None:
         return HttpResponse("Invalid username or password")
 
-    return HttpResponse('Logged in successfully')
+    return HttpResponseRedirect('../dashboard')
 
 def register(request):
     return render(request, 'manager/register.html')

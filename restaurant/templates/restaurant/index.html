@@ -2,10 +2,10 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>Admin-Register</title>
+  <title>Restaurant Panel Log in</title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Admin Panel Register</title>
+  <title>Restaurant Panel Log in</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -28,35 +28,28 @@
                     <i class="fa fa-key" aria-hidden="true"></i>
                 </div>
                 <div class="col-lg-12 login-title">
-                    Register Customer
+                    RESTAURANT PANEL
                 </div>
 
                 <div class="col-lg-12 login-form">
                     <div class="col-lg-12 login-form">
-                        <form action="{% url 'customer:register_customer' %}" method="post">
-                            {% csrf_token %}
+                        <form action = "{% url 'restaurant:login_restaurant' %}", method = "post">
+                            {% csrf_token %}    
                             <div class="form-group">
                                 <label class="form-control-label">USERNAME</label>
-                                <input type="text" class="form-control" name = "username" id = "username">
+                                <input type="text" class="form-control" name="username" id="username">
                             </div>
                             <div class="form-group">
                                 <label class="form-control-label">PASSWORD</label>
-                                <input type="password" class="form-control" name="password" id = "password">
+                                <input type="password" class="form-control" name="password" id="password">
                             </div>
-                            <div class="form-group">
-                                <label class="form-control-label">RE-TYPE PASSWORD</label>
-                                <input type="password" class="form-control" name = "re_password" id = "re_password">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-control-label">PHONE NUMBER</label>
-                                <input type="text" class="form-control" name = "phone_number" id = "phone_number">
-                            </div>
+
                             <div class="col-lg-12 loginbttm">
                                 <div class="col-lg-6 login-btm login-text">
                                     <!-- Error Message -->
                                 </div>
                                 <div class="col-lg-6 login-btm login-button">
-                                    <button type="submit" class="btn btn-outline-primary">Register</button>
+                                    <button type="submit" class="btn btn-outline-primary">LOGIN</button>
                                 </div>
                             </div>
                         </form>
@@ -69,7 +62,7 @@
   
 
         <style>
-            body {
+                body {
                 background: #222D32;
                 font-family: 'Roboto', sans-serif;
             }

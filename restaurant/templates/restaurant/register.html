@@ -2,10 +2,10 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>Admin-Register</title>
+  <title>Restaurant-Register</title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Admin Panel Register</title>
+  <title>Restaurant Panel Register</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -28,13 +28,17 @@
                     <i class="fa fa-key" aria-hidden="true"></i>
                 </div>
                 <div class="col-lg-12 login-title">
-                    Register Customer
+                    Register Restaurant/ Food Chain
                 </div>
 
                 <div class="col-lg-12 login-form">
                     <div class="col-lg-12 login-form">
-                        <form action="{% url 'customer:register_customer' %}" method="post">
+                        <form action="{% url 'restaurant:register_restaurant' %}" method="post">
                             {% csrf_token %}
+                            <div class="form-group">
+                                <label class="form-control-label">NAME</label>
+                                <input type="text" class="form-control" name = "name" id = "name">
+                            </div>
                             <div class="form-group">
                                 <label class="form-control-label">USERNAME</label>
                                 <input type="text" class="form-control" name = "username" id = "username">
@@ -49,7 +53,18 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-control-label">PHONE NUMBER</label>
-                                <input type="text" class="form-control" name = "phone_number" id = "phone_number">
+                                <input type="password" class="form-control" name = "mobile" id = "mobile">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-control-label">Station</label>
+                                <select class="form-select" id="station" name="station">
+                                    <option>Select Station</option>
+                                    {% for station in station_list %}
+                                        {% if station.visible == True %}
+                                        <option value="{{ station.id }}">{{ station.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
                             </div>
                             <div class="col-lg-12 loginbttm">
                                 <div class="col-lg-6 login-btm login-text">
