@@ -9,6 +9,15 @@
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <title>Admin Dashboard</title>
 </head>
+<style>
+    .card {
+        box-shadow: 5px 5px 20px rgb(63, 63, 63);
+    }
+
+    body {
+        background: linear-gradient(to right, #003399, rgb(0, 255, 191));
+    }
+</style>
 
 <body>
 
@@ -32,106 +41,178 @@
 
     <div class="container">
         <br>
-        <h1>Station Status</h1>
-        <table class="table table-dark">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Station</th>
-                    <th scope="col">Latitude</th>
-                    <th scope="col">Longitude</th>
-                    <th scope="col">Status</th>
-                </tr>
-            </thead>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Station Status</h4>
+                <div class="card-text">
+                    <table class="table table-light">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Station</th>
+                                <th scope="col">Latitude</th>
+                                <th scope="col">Longitude</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
 
-            <tbody>
-                {% for station in station_list %}
-                <tr>
-                    <th scope="row">{{ station.id }}</th>
-                    <td>{{ station.name }}</td>
-                    <td>{{ station.lat }}</td>
-                    <td>{{ station.lng }}</td>
-                    <td>
-                        {% if station.visible == True %}
-                        <button onclick="changestatus(this)" type="button" class="btn btn-primary">Remove</button>
-                        {% else %}
-                        <button onclick="changestatus(this)" type="button" class="btn btn-primary">Add</button>
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-            </thead>
-        </table>
-        <form action="{% url 'manager:add_station' %}" method="post">
-            {% csrf_token %}
-            <h1>Add Station</h1>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">Station</span>
-                <input type="text" class="form-control" id="station" name="station" aria-label="Username"
-                    aria-describedby="basic-addon1">
+                        <tbody>
+                            {% for station in station_list %}
+                            <tr>
+                                <th scope="row">{{ station.id }}</th>
+                                <td>{{ station.name }}</td>
+                                <td>{{ station.lat }}</td>
+                                <td>{{ station.lng }}</td>
+                                <td>
+                                    {% if station.visible == True %}
+                                    <button onclick="changestatus(this)" type="button"
+                                        class="btn btn-primary">Remove</button>
+                                    {% else %}
+                                    <button onclick="changestatus(this)" type="button"
+                                        class="btn btn-primary">Add</button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        </thead>
+                    </table>
+                </div>
             </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">Latitude</span>
-                <input type="text" class="form-control" id="lat" name="lat" aria-label="Username"
-                    aria-describedby="basic-addon1">
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">Longitude</span>
-                <input type="text" class="form-control" id="log" name="lon" aria-label="Username"
-                    aria-describedby="basic-addon1">
-            </div>
-            <button type="submit" class="btn btn-primary">Add</button>
-        </form>
-        <h1>Add Train</h1>
-        <form action="{% url 'manager:add_train' %}" method="post" >
-            {% csrf_token %}
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">Train Name</span>
-                <input type="text" class="form-control" id="train" name="train" aria-label="Username"
-                    aria-describedby="basic-addon1">
-            </div>
-            <select class="form-select" name="start" id="start" aria-label="Default select example">
-                <option selected>Start Station</option>
-                {% for station in station_list %}
-                {% if station.visible == True %}
-                <option value="{{ station.id }}">{{ station.name }}</option>
-                {% endif %}
-                {% endfor %}    
-            </select>
-            <div id="new_input"></div>
-            <a href="#" onclick="add_station()">+ Add a station</a>
-            <select class="form-select" name="end" id="end" aria-label="Default select example">
-                <option selected>End Station</option>
-                {% for station in station_list %}
-                {% if station.visible == True %}
-                <option value="{{ station.id }}">{{ station.name }}</option>
-                {% endif %}
-                {% endfor %}    
-            </select>
-            <button type="submit" class="btn btn-primary">Add</button>
-        </form>
-        <h1>Train List</h1>
-        {% if train_list %}
-        <table class="table table-dark">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Train</th>
-                    <th></th>
-                </tr>
-            </thead>
+        </div>
 
-            <tbody>
-                {% for train in train_list %}
-                <tr>
-                    <th scope="row">{{ train.id }}</th>
-                    <td>{{ train.name }}</td>
-                    <td><a href="../edit_train/{{train.id}}">Edit Train</a></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        {% endif %}
+        <br>
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Add Station</h4>
+                        <div class="card-text">
+                            <form action="{% url 'manager:add_station' %}" method="post">
+                                {% csrf_token %}
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">Station</span>
+                                    <input type="text" class="form-control" id="station" name="station"
+                                        aria-label="Username" aria-describedby="basic-addon1">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">Latitude</span>
+                                    <input type="text" class="form-control" id="lat" name="lat" aria-label="Username"
+                                        aria-describedby="basic-addon1">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">Longitude</span>
+                                    <input type="text" class="form-control" id="log" name="lon" aria-label="Username"
+                                        aria-describedby="basic-addon1">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Add</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Add Train</h4>
+                        <div class="card-text">
+                            <form action="{% url 'manager:add_train' %}" method="post">
+                                {% csrf_token %}
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">Train Name</span>
+                                    <input type="text" class="form-control" id="train" name="train"
+                                        aria-label="Username" aria-describedby="basic-addon1">
+                                </div>
+                                <select class="form-select" name="start" id="start" aria-label="Default select example">
+                                    <option selected>Start Station</option>
+                                    {% for station in station_list %}
+                                    {% if station.visible == True %}
+                                    <option value="{{ station.id }}">{{ station.name }}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                                <div id="new_input"></div>
+                                <a class="btn btn-outline-primary" onclick="add_station()">+ Add a station</a>
+                                <select class="form-select" name="end" id="end" aria-label="Default select example">
+                                    <option selected>End Station</option>
+                                    {% for station in station_list %}
+                                    {% if station.visible == True %}
+                                    <option value="{{ station.id }}">{{ station.name }}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                                <br>
+                                <button type="submit" class="btn btn-primary">Add</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">View Delivery Statistics</h4>
+                        <div class="card-text">
+                            <h5>Select Train: </h5>
+                            <table>
+                                <select class="form-select" name="t_train" id="t_train"
+                                    aria-label="Default select example">
+                                    <option selected>Select Train</option>
+                                    {% for train in train_list %}
+                                    <option value="{{ train.id }}">{{ train.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <br>
+                            </table>
+
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#exampleModal" onclick="t_statistics(this)">
+                                Show Statistics
+                            </button>
+
+                            <div id="train_stat" style="width:600px;height:250px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Train List</h4>
+                        <div class="card-text">
+                            <div>
+                                {% if train_list %}
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Train</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for train in train_list %}
+                                        <tr>
+                                            <th scope="row">{{ train.id }}</th>
+                                            <td>{{ train.name }}</td>
+                                            <td><a class="btn btn-primary" href="../edit_train/{{train.id}}">Edit
+                                                    Train</a></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    {% endif %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -142,11 +223,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
         integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
         crossorigin="anonymous"></script>
+    <script src="https://cdn.plot.ly/plotly-2.9.0.min.js"></script>
     <script>
 
         var i = 1;
 
-        function add_station(){
+        function add_station() {
             const new_input = document.createElement('select');
             new_input.className = 'form-select';
             new_input.id = 'r' + i;
@@ -181,7 +263,44 @@
             httpRequest.open('GET', '{% url "manager:change_station_status" %}?' + 'station_id=' + el.parentNode.parentNode.children[0].innerHTML);
             httpRequest.send();
         }
+
+        // function to show statistics for a train
+        function t_statistics(el) {
+            httpRequest = new XMLHttpRequest();
+            if (!httpRequest) {
+                alert('Giving up :( Cannot create an XMLHTTP instance');
+                return false;
+            }
+
+            if (document.getElementById('t_train').value != "Select Train") {
+                httpRequest.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // if the train has no stations
+                        if (this.responseText == "") {
+                            alert("This train has no stations");
+                        }
+                        else {
+                            // if the train has stations
+                            var response = JSON.parse(this.responseText);
+                            delivered = response.delivered;
+                            undelivered = response.undelivered;
+
+                            train_plot = document.getElementById('train_stat');
+                            Plotly.newPlot(train_plot, [{
+                                x: ['delivered', 'undelivered'],
+                                y: [delivered, undelivered],
+                                type: 'bar'
+                            }]);
+                        }
+                    }
+                }
+                httpRequest.open('GET', '{% url "manager:statistics" %}?' + 'train_id=' + document.getElementById('t_train').value);
+                httpRequest.send();
+            }
+            else alert("Please select a train");
+        }
     </script>
+
 </body>
 
 </html>

@@ -1,8 +1,9 @@
-from tracemalloc import start
-from unicodedata import name
 from django.shortcuts import render, get_object_or_404
 from .models import Admin, Station, Train
-from django.http import HttpResponse, HttpResponseRedirect
+from customer.models import Orders
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+import matplotlib.pyplot as plt
+import numpy as np
 # Create your views here.
 
 def login(request):
@@ -83,3 +84,29 @@ def change_station_status(request):
     station.save()
 
     return HttpResponseRedirect('../dashboard')
+
+def statistics(request):
+    # function to plot the statistics of the train
+    train = get_object_or_404(Train, id=request.GET['train_id'])
+    station_list = train.stations.split(" ")
+    stations = []
+
+    for station in station_list:
+        stations.append(Station.objects.get(id=station))
+
+    deliv_cnt = 0
+    undeliv_cnt = 0
+
+    for order in Orders.objects.all():
+        if order.status > 1:
+            for station in stations:
+                if station == order.restaurant.station:
+                    deliv_cnt += 1
+        else:
+            for station in stations:
+                if station == order.restaurant.station:
+                    undeliv_cnt += 1
+
+    context = {'delivered': deliv_cnt, 'undelivered': undeliv_cnt}
+    
+    return JsonResponse(context)

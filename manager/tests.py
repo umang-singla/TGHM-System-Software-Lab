@@ -1,3 +1,6 @@
 from django.test import TestCase
+from manager.models import Admin, Station, Train
 
-# Create your tests here.
+class AdminTestCase(TestCase):
+    def setUp(self) -> None:
+        Admin.objects.create(username="Mradul Agrawal")

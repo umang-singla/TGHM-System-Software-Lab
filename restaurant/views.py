@@ -1,16 +1,19 @@
+from unicodedata import name
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from matplotlib.style import context
 from manager.models import Station
 import restaurant
-from .models import Restaurant
+from .models import FoodItem, Restaurant
 from customer.models import Orders
 
 # Create your views here. 
 
 def dashboard(request,restaurant_id):
     restaurant = Restaurant.objects.get(id=restaurant_id)
-    context = {'restaurant': restaurant}
+    food_list = FoodItem.objects.filter(restaurant_id=restaurant_id)
+    order_list = Orders.objects.filter(restaurant_id=restaurant_id)
+    context = {'restaurant': restaurant,'food_list': food_list, 'order_list': order_list}
     return render(request, 'restaurant/dashboard.html',context)
 
 def login(request):
@@ -35,4 +38,15 @@ def register_restaurant(request):
     obj = Restaurant(username=request.POST['username'], password=request.POST['password'], name=request.POST['name'], station=Station.objects.get(id=request.POST['station']), mobile=request.POST['mobile'])
     obj.save()
     return HttpResponseRedirect('../login')
-    # if obj
+
+def add_food(request,restaurant_id):
+    restaurant = Restaurant.objects.get(id=restaurant_id)
+    food = FoodItem(name=request.POST['food_name'], price=request.POST['food_price'], restaurant=restaurant)
+    food.save()
+    return HttpResponseRedirect('../dashboard/' + str(restaurant.id))
+
+def change_status(request,order_id):
+    order = Orders.objects.get(id=order_id)
+    order.status += 1
+    order.save()
+    return HttpResponseRedirect('../dashboard/' + str(order.restaurant.id))

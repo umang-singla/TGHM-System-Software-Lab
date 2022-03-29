@@ -1,7 +1,8 @@
 # from asyncio.windows_events import NULL
+from datetime import datetime
 from django.db import models
 from manager.models import Station
-from restaurant.models import Restaurant
+from restaurant.models import Restaurant, FoodItem
 
 class Customer(models.Model):
     username = models.CharField(max_length= 20)
@@ -11,11 +12,11 @@ class Customer(models.Model):
         return self.username
 
 class Orders(models.Model):
-    food_item = models.CharField(max_length= 30, default= "")
+    food_item = models.IntegerField()
     restaurant = models.ForeignKey(Restaurant, on_delete= models.CASCADE, default=None)
     customer = models.ForeignKey(Customer, on_delete= models.CASCADE, default=None)
-    time = models.DateTimeField()
-    price = models.FloatField(default= 0)
+    time = models.DateTimeField(default= datetime.now())
+    status = models.IntegerField(default=0)
     
     def __str__(self):
-        return self.food_item # + ", " + self.restaurant + ", " + str(self.time)
+        return FoodItem.objects.get(id = self.food_item).name + ", " + self.restaurant.name + ", " + str(self.time)

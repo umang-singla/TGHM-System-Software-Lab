@@ -11,6 +11,15 @@
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
     <title>Restaurant-Dashboard</title>
+    <style>
+        .card{
+            height: 300px;
+            box-shadow: 5px 5px 20px rgb(63, 63, 63);
+        }
+        body{
+            background: linear-gradient(to right, #003399, rgb(0, 255, 191) );
+        }
+    </style>
 </head>
 
 <body>
@@ -33,7 +42,7 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <div class="card" >
+                <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Information</h5>
                         <div class="card-text">
@@ -68,14 +77,96 @@
                 </div>
             </div>
             <div class="col">
-                <div class="card" style="width: 18rem;">
+                <div class="card">
                     <div class="card-body">
-                      <h5 class="card-title">Order Status</h5>
-                      <div class="card-text">
-                          {Status}
-                      </div>
+                        <h5 class="card-title">Order Status</h5>
+                        <div class="card-text">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Order ID</th>
+                                        <th scope="col">Food Item</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for order in order_list %}
+                                    <tr>
+                                        <td>{{order.id}}</td>
+                                        {% for food in food_list %}
+                                        {% if food.id == order.food_item %}
+                                            <td>{{food.name}}</td>
+                                        {% endif %}
+                                        {% endfor %}
+                                        {% if order.status == 0 %}
+                                        <td><a class="btn btn-primary" href="/restaurant/change_status/{{order.id}}">Accept Order</a></td>
+                                        {% elif order.status == 1 %}
+                                        <td>Accepted</td>
+                                        {% elif order.status == 2 %}
+                                        <td>Delivered</td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                  </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Add Food Item</h5>
+                        <div class="card-text">
+                            <form action="/restaurant/add_food/{{restaurant.id}}" method="post">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="food_name">Food Name</label>
+                                    <input type="text" class="form-control" id="food_name" name="food_name"
+                                        placeholder="Enter Food Name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="food_price">Food Price</label>
+                                    <input type="text" class="form-control" id="food_price" name="food_price"
+                                        placeholder="Enter Food Price">
+                                </div>
+                                <br><button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Menu</h5>
+                        <div class="card-text">
+                            {% if food_list %}
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Food Item</th>
+                                        <th scope="col">Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in food_list %}
+                                    <tr>
+                                        <td>{{item.name}}</td>
+                                        <td>{{item.price}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% else %}
+                            <p>No Food Items</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
