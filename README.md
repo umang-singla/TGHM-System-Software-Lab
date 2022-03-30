@@ -20,4 +20,4 @@ py manage.py runserver
 python3 manage.py test -v 3 --testrunner auto_test.HtmlTestReporter
 ```
 
-The report gets saved in a folder named reports
+The report gets saved in a folder named reports.

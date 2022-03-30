@@ -11,9 +11,9 @@
         <div class="row">
             <div class="col-xs-12">
                 <h2 class="text-capitalize">Unittest Results</h2>
-                <p class='attribute'><strong>Start Time: </strong>2022-03-30 19:56:16</p>
-                <p class='attribute'><strong>Duration: </strong>24 ms</p>
-                <p class='attribute'><strong>Summary: </strong>Total: 18, Pass: 18</p>
+                <p class='attribute'><strong>Start Time: </strong>2022-03-30 20:44:30</p>
+                <p class='attribute'><strong>Duration: </strong>44 ms</p>
+                <p class='attribute'><strong>Summary: </strong>Total: 24, Pass: 22, Fail: 2</p>
             </div>
         </div>
         <div class="row">
@@ -93,7 +93,7 @@
                         </tr>
                         <tr>
                             <td colspan="3">
-                                Total: 8, Pass: 8 -- Duration: 19 ms
+                                Total: 8, Pass: 8 -- Duration: 28 ms
                             </td>
                         </tr>
                     </tbody>
@@ -111,12 +111,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class='success'>
+                        <tr class='danger'>
                             <td class="col-xs-10">test_correct_username_password</td>
                             <td class="col-xs-1">
-                                <span class="label label-success" style="display:block;width:40px;">Pass</span>
+                                <span class="label label-danger" style="display:block;width:40px;">Fail</span>
                             </td>
                             <td class="col-xs-1">
+                                <button class="btn btn-default btn-xs">View</button>
+                            </td>
+                        </tr>
+                        <tr style="display:none;">
+                            <td class="col-xs-9" colspan="3"><p style="color:maroon;">AssertionError: </p><p style="color:maroon;">Traceback (most recent call last):
+  File "D:\IIT KGP Docs\SEM 4\Software Engineering Lab\TGHM Project\manager\tests.py", line 45, in test_correct_username_password
+    assert(response.status_code == 200)
+AssertionError
+</p>
                             </td>
                         </tr>
                         <tr class='success'>
@@ -145,7 +154,7 @@
                         </tr>
                         <tr>
                             <td colspan="3">
-                                Total: 4, Pass: 4 -- Duration: 2 ms
+                                Total: 4, Pass: 3, Fail: 1 -- Duration: 3 ms
                             </td>
                         </tr>
                     </tbody>
@@ -163,12 +172,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class='success'>
+                        <tr class='danger'>
                             <td class="col-xs-10">test_input_correct</td>
                             <td class="col-xs-1">
-                                <span class="label label-success" style="display:block;width:40px;">Pass</span>
+                                <span class="label label-danger" style="display:block;width:40px;">Fail</span>
                             </td>
                             <td class="col-xs-1">
+                                <button class="btn btn-default btn-xs">View</button>
+                            </td>
+                        </tr>
+                        <tr style="display:none;">
+                            <td class="col-xs-9" colspan="3"><p style="color:maroon;">AssertionError: </p><p style="color:maroon;">Traceback (most recent call last):
+  File "D:\IIT KGP Docs\SEM 4\Software Engineering Lab\TGHM Project\manager\tests.py", line 90, in test_input_correct
+    assert(response.status_code == 200)
+AssertionError
+</p>
                             </td>
                         </tr>
                         <tr class='success'>
@@ -197,7 +215,7 @@
                         </tr>
                         <tr>
                             <td colspan="3">
-                                Total: 4, Pass: 4 -- Duration: 1 ms
+                                Total: 4, Pass: 3, Fail: 1 -- Duration: 1 ms
                             </td>
                         </tr>
                     </tbody>
@@ -216,6 +234,30 @@
                     </thead>
                     <tbody>
                         <tr class='success'>
+                            <td class="col-xs-10">test_login_restaurent_password_mismatch</td>
+                            <td class="col-xs-1">
+                                <span class="label label-success" style="display:block;width:40px;">Pass</span>
+                            </td>
+                            <td class="col-xs-1">
+                            </td>
+                        </tr>
+                        <tr class='success'>
+                            <td class="col-xs-10">test_login_restaurent_success</td>
+                            <td class="col-xs-1">
+                                <span class="label label-success" style="display:block;width:40px;">Pass</span>
+                            </td>
+                            <td class="col-xs-1">
+                            </td>
+                        </tr>
+                        <tr class='success'>
+                            <td class="col-xs-10">test_login_restaurent_username_mismatch</td>
+                            <td class="col-xs-1">
+                                <span class="label label-success" style="display:block;width:40px;">Pass</span>
+                            </td>
+                            <td class="col-xs-1">
+                            </td>
+                        </tr>
+                        <tr class='success'>
                             <td class="col-xs-10">test_negative_price</td>
                             <td class="col-xs-1">
                                 <span class="label label-success" style="display:block;width:40px;">Pass</span>
@@ -224,7 +266,31 @@
                             </td>
                         </tr>
                         <tr class='success'>
-                            <td class="col-xs-10">test_register_restaurant_station_not_selected</td>
+                            <td class="col-xs-10">test_register_restaurant_null_password</td>
+                            <td class="col-xs-1">
+                                <span class="label label-success" style="display:block;width:40px;">Pass</span>
+                            </td>
+                            <td class="col-xs-1">
+                            </td>
+                        </tr>
+                        <tr class='success'>
+                            <td class="col-xs-10">test_register_restaurant_null_username</td>
+                            <td class="col-xs-1">
+                                <span class="label label-success" style="display:block;width:40px;">Pass</span>
+                            </td>
+                            <td class="col-xs-1">
+                            </td>
+                        </tr>
+                        <tr class='success'>
+                            <td class="col-xs-10">test_register_restaurant_success</td>
+                            <td class="col-xs-1">
+                                <span class="label label-success" style="display:block;width:40px;">Pass</span>
+                            </td>
+                            <td class="col-xs-1">
+                            </td>
+                        </tr>
+                        <tr class='success'>
+                            <td class="col-xs-10">test_register_restaurent_repassword_mismatch</td>
                             <td class="col-xs-1">
                                 <span class="label label-success" style="display:block;width:40px;">Pass</span>
                             </td>
@@ -233,7 +299,7 @@
                         </tr>
                         <tr>
                             <td colspan="3">
-                                Total: 2, Pass: 2 -- Duration: 0 ms
+                                Total: 8, Pass: 8 -- Duration: 10 ms
                             </td>
                         </tr>
                     </tbody>

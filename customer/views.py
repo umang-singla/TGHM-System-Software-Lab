@@ -11,6 +11,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 import json
 # Create your views here.
 
+# login functions
 def login(request):
     return render(request, 'customer/index.html')
 
@@ -25,8 +26,9 @@ def login_customer(request):
         messages.error(request, 'Invalid Credentials!')
         return HttpResponseRedirect('../login/', status=302)
 
-    return HttpResponseRedirect('../dashboard/' + str(obj.id), status=200)
+    return HttpResponseRedirect('../dashboard/' + str(obj.id))
 
+# register functions
 def register(request):
     return render(request, 'customer/register.html')
 
@@ -35,20 +37,22 @@ def register_customer(request):
         customer = Customer(username= request.POST['username'], password= request.POST['password'], phone_number = request.POST['phone_number'])
 
         if Customer.objects.filter(username=customer.username, password = customer.password, phone_number = customer.phone_number).exists():
-            return HttpResponseRedirect('../dashboard/' + str(Customer.objects.filter(username=customer.username, password = customer.password)[0].id), status = 200)
+            return HttpResponseRedirect('../dashboard/' + str(Customer.objects.filter(username=customer.username, password = customer.password)[0].id))
         
         customer.save()
-        return HttpResponseRedirect('../dashboard/' + str(customer.id), status = 200)
+        return HttpResponseRedirect('../dashboard/' + str(customer.id))
     else: 
         messages.error(request, 'Invalid username, mobile number or passwords do not match!')
         return HttpResponseRedirect('../register/', status = 302)
 
+# function to display the dashboard
 def dashboard(request, customer_id):
     customer = Customer.objects.get(id=customer_id)
     order_list  = Orders.objects.filter(customer=customer)
     context = {'order_list': order_list, 'customer': customer, 'train_list': Train.objects.all(), 'food_list': FoodItem.objects.all()}
     return render(request, 'customer/dashboard.html', context)
 
+# function to fetch the station list and restaurant list corresponding to the train
 def fetch_station(request):
     station = Train.objects.get(id=request.GET['train_id']).stations.split(' ')
     station_list, id_list = [],[]
@@ -69,6 +73,7 @@ def fetch_station(request):
 
     return JsonResponse({'station_list': station_list, 'id_list': id_list, 'restaurant_list': restaurant_list})
 
+# function to fetch the food item list corresponding to the selected restaurant
 def fetch_food(request):
     restaurant = Restaurant.objects.get(id=request.GET['restaurant_id'])
     food_list = FoodItem.objects.filter(restaurant=restaurant)
@@ -80,6 +85,7 @@ def fetch_food(request):
 
     return JsonResponse({'food_list': foods})
 
+# function to get the travel-time of delivery
 def get_time(request):
 
     def haversine(lat1, lon1, lat2, lon2):
@@ -128,7 +134,7 @@ def get_time(request):
 
         return JsonResponse({'time': str(hr) + " hr : " + str(min) + " min : " + str(sec) + " sec"})
 
-
+# function to place an order
 def place_order(request,customer_id):
     order = Orders(customer = Customer.objects.get(id=customer_id), restaurant = Restaurant.objects.get(id=request.POST['restaurant']), food_item = request.POST['food'])
     order.save()

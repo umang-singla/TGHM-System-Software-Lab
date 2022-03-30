@@ -6,6 +6,7 @@ from customer.models import Orders
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 # Create your views here.
 
+# function to check if the input is a float
 def isfloat(num):
     try:
         float(num)
@@ -13,6 +14,7 @@ def isfloat(num):
     except ValueError:
         return False
 
+# functions to login the manager 
 def login(request):
     return render(request, 'manager/index.html')
 
@@ -27,8 +29,9 @@ def login_admin(request):
         messages.error(request, 'Invalid username or password!')
         return HttpResponseRedirect('../login', status= 302)
 
-    return HttpResponseRedirect('../dashboard', status= 200)
+    return HttpResponseRedirect('../dashboard')
 
+# functions to register a management user
 def register(request):
     return render(request, 'manager/register.html')
 
@@ -42,17 +45,19 @@ def register_admin(request):
         messages.error(request, 'Invalid username or passwords do not match!')
         return HttpResponseRedirect('../register')
 
+# function to render dashboard page
 def dashboard(request):
     context = {'station_list': Station.objects.all(), 'train_list': Train.objects.all()}
     return render(request, 'manager/dashboard.html',context)
 
+# function to add a station to the system
 def add_station(request):
     # return HttpResponse(request.POST['station'] + ' added successfully')
     if isfloat(request.POST['lat']) and isfloat(request.POST['lon']) and request.POST['station'] != "" and request.POST['lat']!= "" and request.POST['lon']!= "": 
         if -90 < float(request.POST['lat']) < 90 and -180 < float(request.POST['lon']) < 180:
             station = Station(name= request.POST['station'], lat= request.POST['lat'], lng= request.POST['lon'])
             station.save()
-            return HttpResponseRedirect('../dashboard', status= 200)
+            return HttpResponseRedirect('../dashboard')
         else :
             messages.error(request, 'Latitude or Longitude out of range!')
             return HttpResponseRedirect('../dashboard', status= 302)
@@ -60,6 +65,7 @@ def add_station(request):
         messages.error(request, 'Invalid input!')
         return HttpResponseRedirect('../dashboard', status = 302)
 
+# function to edit an existing train
 def edit_train(request,train_id):
 
     if request.method == 'POST':
@@ -81,6 +87,7 @@ def edit_train(request,train_id):
     context = {'train_name': train_name, 'stations': stations,'station_list': Station.objects.all(), 'train_id': train_id}
     return HttpResponse(render(request, 'manager/edit_train.html', context))
 
+# function to add a train to the system
 def add_train(request):
 
     train = request.POST['train']
@@ -96,6 +103,7 @@ def add_train(request):
 
     return HttpResponseRedirect('../dashboard')
     
+# function to change the status of a station
 def change_station_status(request):
     station = get_object_or_404(Station, id=request.GET['station_id'])
     station.visible = not station.visible
@@ -103,8 +111,8 @@ def change_station_status(request):
 
     return HttpResponseRedirect('../dashboard')
 
+# function to plot the statistics for a route
 def statistics(request):
-    # function to plot the statistics of the train
     train = get_object_or_404(Train, id=request.GET['train_id'])
     station_list = train.stations.split(" ")
     stations = []
