@@ -1,6 +1,7 @@
 from unicodedata import name
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib import messages
 from matplotlib.style import context
 from manager.models import Station
 import restaurant
@@ -26,7 +27,8 @@ def login_restaurant(request):
             obj = restaurant
             break
     if obj is None:
-        return render(request, 'restaurant/login.html', {'error': 'Invalid username or password!'})
+        messages.error(request, 'Invalid username or password!')
+        return HttpResponseRedirect('../login/')
     
     return HttpResponseRedirect('../dashboard/' + str(obj.id))
 
@@ -35,9 +37,14 @@ def register(request):
     return render(request, 'restaurant/register.html',context)
 
 def register_restaurant(request):
-    obj = Restaurant(username=request.POST['username'], password=request.POST['password'], name=request.POST['name'], station=Station.objects.get(id=request.POST['station']), mobile=request.POST['mobile'])
-    obj.save()
-    return HttpResponseRedirect('../login')
+    if request.POST['username']!= "" and request.POST['password'] == request.POST['re_password'] and request.POST['mobile']!= "" and request.POST['station']!= "Select Station": 
+        obj = Restaurant(username=request.POST['username'], password=request.POST['password'], name=request.POST['name'], station=Station.objects.get(id=request.POST['station']), mobile=request.POST['mobile'])
+        obj.save()
+    
+        return HttpResponseRedirect('../login/')
+    else :
+        messages.error(request, 'Error! Please fill all the fields correctly!')
+        return HttpResponseRedirect('../register')
 
 def add_food(request,restaurant_id):
     restaurant = Restaurant.objects.get(id=restaurant_id)

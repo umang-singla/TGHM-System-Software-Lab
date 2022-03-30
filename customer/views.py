@@ -2,6 +2,7 @@ import math
 from wsgiref.util import request_uri
 from django.shortcuts import render, get_object_or_404
 import customer
+from django.contrib import messages
 from customer.models import Customer, Orders
 from restaurant.models import FoodItem, Restaurant
 from manager.models import Station, Train
@@ -16,12 +17,13 @@ def login(request):
 def login_customer(request):
     obj = None
     for customer in Customer.objects.all():
-        if customer.username == request.POST['username'] and customer.password == request.POST['password']:
+        if customer.username == request.POST['username'] and customer.password == request.POST['password'] and customer.username!= "" and customer.password!= "":
             obj = customer
             break
     
     if obj is None:
-        return HttpResponse("Invalid username or password")
+        messages.error(request, 'Invalid Credentials!')
+        return HttpResponseRedirect('../login/')
 
     return HttpResponseRedirect('../dashboard/' + str(obj.id))
 
@@ -29,7 +31,7 @@ def register(request):
     return render(request, 'customer/register.html')
 
 def register_customer(request):
-    if request.POST['password'] == request.POST['re_password']: 
+    if request.POST['password'] == request.POST['re_password'] and request.POST['password']!= "" and request.POST['username']!= "" and len(request.POST['mobile'])>=10: 
         customer = Customer(username= request.POST['username'], password= request.POST['password'], phone_number = request.POST['phone_number'])
 
         if Customer.objects.filter(username=customer.username, password = customer.password).exists():
@@ -38,7 +40,8 @@ def register_customer(request):
         customer.save()
         return HttpResponseRedirect('../dashboard/' + str(customer.id))
     else: 
-        return render(request, 'customer/register.html', {'error': 'Passwords do not match'})
+        messages.error(request, 'Invalid username, mobile number or passwords do not match!')
+        return HttpResponseRedirect('../register/')
 
 def dashboard(request, customer_id):
     customer = Customer.objects.get(id=customer_id)

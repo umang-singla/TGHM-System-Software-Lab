@@ -1,10 +1,17 @@
+from telnetlib import STATUS
 from django.shortcuts import render, get_object_or_404
+from django.contrib import messages
 from .models import Admin, Station, Train
 from customer.models import Orders
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-import matplotlib.pyplot as plt
-import numpy as np
 # Create your views here.
+
+def isfloat(num):
+    try:
+        float(num)
+        return True
+    except ValueError:
+        return False
 
 def login(request):
     return render(request, 'manager/index.html')
@@ -17,7 +24,8 @@ def login_admin(request):
             break
     
     if obj is None:
-        return HttpResponse("Invalid username or password")
+        messages.error(request, 'Invalid username or password!')
+        return HttpResponseRedirect('../login')
 
     return HttpResponseRedirect('../dashboard')
 
@@ -25,10 +33,14 @@ def register(request):
     return render(request, 'manager/register.html')
 
 def register_admin(request):
-    admin = Admin(username= request.POST['username'], password= request.POST['password'])
-    admin.save()
+    if request.POST['username'] != "" and request.POST['password'] == request.POST['re_password']:
+        admin = Admin(username= request.POST['username'], password= request.POST['password'])
+        admin.save()
 
-    return HttpResponseRedirect('../dashboard')
+        return HttpResponseRedirect('../dashboard')
+    else :
+        messages.error(request, 'Invalid username or passwords do not match!')
+        return HttpResponseRedirect('../register')
 
 def dashboard(request):
     context = {'station_list': Station.objects.all(), 'train_list': Train.objects.all()}
@@ -36,10 +48,17 @@ def dashboard(request):
 
 def add_station(request):
     # return HttpResponse(request.POST['station'] + ' added successfully')
-    station = Station(name= request.POST['station'], lat= request.POST['lat'], lng= request.POST['lon'])
-    station.save()
-
-    return HttpResponseRedirect('../dashboard')
+    if isfloat(request.POST['lat']) and isfloat(request.POST['lon']) and request.POST['station'] != "" and request.POST['lat']!= "" and request.POST['lon']!= "": 
+        if -90 < float(request.POST['lat']) < 90 and -180 < float(request.POST['lon']) < 180:
+            station = Station(name= request.POST['station'], lat= request.POST['lat'], lng= request.POST['lon'])
+            station.save()
+            return HttpResponseRedirect('../dashboard', status= 200)
+        else :
+            messages.error(request, 'Latitude or Longitude out of range!')
+            return HttpResponseRedirect('../dashboard', status= 302)
+    else:
+        messages.error(request, 'Invalid input!')
+        return HttpResponseRedirect('../dashboard')
 
 def edit_train(request,train_id):
 

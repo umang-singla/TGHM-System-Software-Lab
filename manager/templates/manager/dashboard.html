@@ -105,6 +105,16 @@
                                     <input type="text" class="form-control" id="log" name="lon" aria-label="Username"
                                         aria-describedby="basic-addon1">
                                 </div>
+                                <div class="col-lg-6 login-btm login-text">
+                                    <!-- Error Message -->
+                                    {% if messages %}
+                                    <ul class="messages">
+                                        {% for message in messages %}
+                                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %}
+                                </div>
                                 <button type="submit" class="btn btn-primary">Add</button>
                             </form>
                         </div>
@@ -132,6 +142,7 @@
                                     {% endfor %}
                                 </select>
                                 <div id="new_input"></div>
+                                <br>
                                 <a class="btn btn-outline-primary" onclick="add_station()">+ Add a station</a>
                                 <select class="form-select" name="end" id="end" aria-label="Default select example">
                                     <option selected>End Station</option>
@@ -142,6 +153,7 @@
                                     {% endfor %}
                                 </select>
                                 <br>
+
                                 <button type="submit" class="btn btn-primary">Add</button>
                             </form>
                         </div>
