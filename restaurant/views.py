@@ -37,20 +37,25 @@ def register(request):
     return render(request, 'restaurant/register.html',context)
 
 def register_restaurant(request):
-    if request.POST['username']!= "" and request.POST['password'] == request.POST['re_password'] and request.POST['mobile']!= "" and request.POST['station']!= "Select Station": 
-        obj = Restaurant(username=request.POST['username'], password=request.POST['password'], name=request.POST['name'], station=Station.objects.get(id=request.POST['station']), mobile=request.POST['mobile'])
+    if request.POST['username']!= "" and request.POST['password'] == request.POST['re_password'] and request.POST['mobile']!= "": 
+        obj = Restaurant(username=request.POST['username'], password=request.POST['password'], name=request.POST['name'], station=Station.objects.get(id=request.POST['station']))
         obj.save()
     
-        return HttpResponseRedirect('../login/')
+        return HttpResponseRedirect('../dashboard/' + str(obj.id), status = 200)
     else :
         messages.error(request, 'Error! Please fill all the fields correctly!')
-        return HttpResponseRedirect('../register')
+        return HttpResponseRedirect('../register', status = 302)
 
-def add_food(request,restaurant_id):
+def add_food(request, restaurant_id):
     restaurant = Restaurant.objects.get(id=restaurant_id)
-    food = FoodItem(name=request.POST['food_name'], price=request.POST['food_price'], restaurant=restaurant)
-    food.save()
-    return HttpResponseRedirect('../dashboard/' + str(restaurant.id))
+    if request.POST['food_name']!= "" and request.POST['price'].isnumeric() and  int(request.POST['price'])>= 0:
+        food = FoodItem(name=request.POST['food_name'], price=request.POST['food_price'], restaurant=restaurant)
+        food.save()
+        return HttpResponseRedirect('../dashboard/' + str(restaurant.id), status = 200)
+    
+    else :
+        messages.error(request, 'Error! Please fill all the fields correctly!')
+        return HttpResponseRedirect('../dashboard/' + str(restaurant.id), status = 302)
 
 def change_status(request,order_id):
     order = Orders.objects.get(id=order_id)

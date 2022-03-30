@@ -1,6 +1,6 @@
 # Travel In Good Health Management System
 
-## Installation 
+## Installation
 
 ```bash
 pip install -r requirements.txt
@@ -16,8 +16,8 @@ py manage.py runserver
 
 ## Testing
 
-```bash 
+```bash
 python3 manage.py test -v 3 --testrunner auto_test.HtmlTestReporter
 ```
 
-#### The report gets saved in a folder named reports
+The report gets saved in a folder named reports

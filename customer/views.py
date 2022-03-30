@@ -23,25 +23,25 @@ def login_customer(request):
     
     if obj is None:
         messages.error(request, 'Invalid Credentials!')
-        return HttpResponseRedirect('../login/')
+        return HttpResponseRedirect('../login/', status=302)
 
-    return HttpResponseRedirect('../dashboard/' + str(obj.id))
+    return HttpResponseRedirect('../dashboard/' + str(obj.id), status=200)
 
 def register(request):
     return render(request, 'customer/register.html')
 
 def register_customer(request):
-    if request.POST['password'] == request.POST['re_password'] and request.POST['password']!= "" and request.POST['username']!= "" and len(request.POST['mobile'])>=10: 
+    if request.POST['password'] == request.POST['re_password'] and request.POST['password']!= "" and request.POST['username']!= "" : 
         customer = Customer(username= request.POST['username'], password= request.POST['password'], phone_number = request.POST['phone_number'])
 
-        if Customer.objects.filter(username=customer.username, password = customer.password).exists():
-            return HttpResponseRedirect('../dashboard/' + str(Customer.objects.filter(username=customer.username, password = customer.password)[0].id))
+        if Customer.objects.filter(username=customer.username, password = customer.password, phone_number = customer.phone_number).exists():
+            return HttpResponseRedirect('../dashboard/' + str(Customer.objects.filter(username=customer.username, password = customer.password)[0].id), status = 200)
         
         customer.save()
-        return HttpResponseRedirect('../dashboard/' + str(customer.id))
+        return HttpResponseRedirect('../dashboard/' + str(customer.id), status = 200)
     else: 
         messages.error(request, 'Invalid username, mobile number or passwords do not match!')
-        return HttpResponseRedirect('../register/')
+        return HttpResponseRedirect('../register/', status = 302)
 
 def dashboard(request, customer_id):
     customer = Customer.objects.get(id=customer_id)

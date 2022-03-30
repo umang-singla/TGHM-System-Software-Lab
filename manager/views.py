@@ -25,9 +25,9 @@ def login_admin(request):
     
     if obj is None:
         messages.error(request, 'Invalid username or password!')
-        return HttpResponseRedirect('../login')
+        return HttpResponseRedirect('../login', status= 302)
 
-    return HttpResponseRedirect('../dashboard')
+    return HttpResponseRedirect('../dashboard', status= 200)
 
 def register(request):
     return render(request, 'manager/register.html')
@@ -58,7 +58,7 @@ def add_station(request):
             return HttpResponseRedirect('../dashboard', status= 302)
     else:
         messages.error(request, 'Invalid input!')
-        return HttpResponseRedirect('../dashboard')
+        return HttpResponseRedirect('../dashboard', status = 302)
 
 def edit_train(request,train_id):
 
@@ -80,7 +80,6 @@ def edit_train(request,train_id):
         stations.append(Station.objects.get(id=station))
     context = {'train_name': train_name, 'stations': stations,'station_list': Station.objects.all(), 'train_id': train_id}
     return HttpResponse(render(request, 'manager/edit_train.html', context))
-    pass
 
 def add_train(request):
 
